@@ -11,7 +11,7 @@
 #define BUILD_TARGET "ESP32_WROOM"
 
 
-bool isnan(float xx);
+// bool isnan(float xx);
 
 
 
@@ -25,6 +25,10 @@ void __asm_ (const char* xxxx);
 typedef size_t mem_size_t;
 void * mem_malloc(mem_size_t size);
 void mem_free(void *rmem);
+
+
+
+
 
 
 #endif

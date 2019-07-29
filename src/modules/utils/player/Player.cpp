@@ -2,13 +2,13 @@
 
 #include "robot/Robot.h"
 #include "libs/OutputStream.h"
-#include "GCode.h"
-#include "ConfigReader.h"
-#include "Dispatcher.h"
+#include "smoothie/GCode.h"
+#include "smoothie/ConfigReader.h"
+#include "smoothie/Dispatcher.h"
 #include "robot/Conveyor.h"
 #include "libs/StringUtils.h"
 #include "modules/tools/temperaturecontrol/TemperatureControl.h"
-#include "main.h"
+#include "startup.h"
 #include "libs/MessageQueue.h"
 
 #include "FreeRTOS.h"

@@ -1,6 +1,6 @@
 #include "Thermistor.h"
 
-#include "ConfigReader.h"
+#include "smoothie/ConfigReader.h"
 #include "libs/OutputStream.h"
 #include "libs/StringUtils.h"
 #include "stdio.h"
@@ -242,6 +242,8 @@ bool Thermistor::calc_jk()
 }
 
 // >>>Xuming
+#include "Arduino.h"
+
 #define isinf(n) (isnan((n) - (n)) && !isnan(n))
 //Xuming<<<
 float Thermistor::get_temperature()

@@ -1,15 +1,15 @@
 #include "Conveyor.h"
 
-#include "AxisDefns.h"
-#include "GCode.h"
+#include "smoothie/AxisDefns.h"
+#include "smoothie/GCode.h"
 #include "Block.h"
 #include "Planner.h"
-#include "ConfigReader.h"
+#include "smoothie/ConfigReader.h"
 #include "StepTicker.h"
 #include "Robot.h"
 #include "StepperMotor.h"
 #include "PlannerQueue.h"
-#include "main.h"
+#include "startup.h"
 
 #include "FreeRTOS.h"
 #include "freertos/task.h"
@@ -132,7 +132,7 @@ void Conveyor::check_queue(bool force)
 
 // called from step ticker ISR
 // we only ever access or change the read/tail index of the queue so this is thread safe
-_ramfunc_ bool Conveyor::get_next_block(Block **block)
+bool Conveyor::get_next_block(Block **block)
 {
     // empty the entire queue
     if (flush){
@@ -168,7 +168,7 @@ _ramfunc_ bool Conveyor::get_next_block(Block **block)
 }
 
 // called from step ticker ISR when block is finished, do not do anything slow here
-_ramfunc_ void Conveyor::block_finished()
+void Conveyor::block_finished()
 {
     // release the tail
     PQUEUE->release_tail();

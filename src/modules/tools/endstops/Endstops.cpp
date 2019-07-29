@@ -1,5 +1,5 @@
 #include "Endstops.h"
-#include "GCode.h"
+#include "smoothie/GCode.h"
 #include "robot/Conveyor.h"
 #include "robot/ActuatorCoordinates.h"
 #include "_hal/__hal.h"
@@ -9,9 +9,9 @@
 #include "robot/Planner.h"
 #include "libs/OutputStream.h"
 #include "robot/StepTicker.h"
-#include "ConfigReader.h"
-#include "Dispatcher.h"
-#include "main.h"
+#include "smoothie/ConfigReader.h"
+#include "smoothie/Dispatcher.h"
+#include "startup.h"
 
 #include "robot/arm_solutions/BaseSolution.h"
 
@@ -1042,6 +1042,7 @@ bool Endstops::handle_mcode(GCode& gcode, OutputStream& os)
     return true;
 }
 
+#include "Arduino.h"
 bool Endstops::request(const char *key, void *value)
 {
     if(strcmp(key, "get_homing_status") == 0) {

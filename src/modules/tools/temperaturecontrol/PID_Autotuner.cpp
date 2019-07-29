@@ -2,8 +2,8 @@
 #include "TemperatureControl.h"
 #include "libs/SigmaDeltaPwm.h"
 #include "libs/OutputStream.h"
-#include "GCode.h"
-#include "main.h"
+#include "smoothie/GCode.h"
+#include "startup.h"
 
 #include <cmath>        // std::abs
 

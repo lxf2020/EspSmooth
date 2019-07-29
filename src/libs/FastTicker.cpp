@@ -17,8 +17,7 @@ FastTicker *FastTicker::instance;
 
 // This module uses a Timer to periodically call registered callbacks
 // Modules register with a function ( callback ) and a frequency, and we then call that function at the given frequency.
-// We could use TMR1 fir this
-
+// We could use tmr2 for this
 FastTicker::FastTicker()
 {
     instance= this;
@@ -27,12 +26,12 @@ FastTicker::FastTicker()
 FastTicker::~FastTicker()
 {
     instance= nullptr;
-    tmr1_stop();   
+    tmr2_stop();   
 }
 
 #define _ramfunc_ __attribute__ ((section(".ramfunctions"),long_call,noinline))
 
-_ramfunc_ static void timer_handler()
+static void timer_handler()
 {
     FastTicker::getInstance()->tick();
 }
@@ -41,6 +40,7 @@ _ramfunc_ static void timer_handler()
 bool FastTicker::start()
 {
     if(max_frequency == 0) {
+        //known consumers are:   Temperature control PWM output, in "config.frequency.pwm=10000"
         printf("WARNING: FastTicker not started as nothing has attached to it\n");
         return false;
     }
@@ -50,7 +50,7 @@ bool FastTicker::start()
             printf("ERROR: FastTicker cannot be set < %luHz or > %dHz\n", MIN_FREQUENCY, MAX_FREQUENCY);
             return false;
         }
-        tmr1_setup(max_frequency, (void *)timer_handler);
+        tmr2_setup(max_frequency, (void *)timer_handler);
 
     }else{
         printf("WARNING: FastTicker already started\n");
@@ -64,7 +64,7 @@ bool FastTicker::start()
 bool FastTicker::stop()
 {
     if(started) {
-        tmr1_stop();
+        tmr2_stop();
         started= false;
     }
     return true;
@@ -110,14 +110,14 @@ bool FastTicker::set_frequency( int frequency )
 
     if(started) {
         // change frequency of timer callback
-        tmr1_set_frequency(frequency);
+        tmr2_set_frequency(frequency);
     }
 
     return true;
 }
 
 // This is an ISR anything that this calls that is faster than 1KHz should be a ramfunc too
-_ramfunc_ void FastTicker::tick()
+void FastTicker::tick()
 {
     // Call all callbacks that need to be called
     for(auto& i : callbacks) {

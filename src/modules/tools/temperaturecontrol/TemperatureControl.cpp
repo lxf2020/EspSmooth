@@ -3,11 +3,11 @@
 #include "libs/SigmaDeltaPwm.h"
 #include "robot/Conveyor.h"
 #include "libs/OutputStream.h"
-#include "GCode.h"
+#include "smoothie/GCode.h"
 #include "libs/SlowTicker.h"
 #include "libs/FastTicker.h"
-#include "Dispatcher.h"
-#include "main.h"
+#include "smoothie/Dispatcher.h"
+#include "startup.h"
 #include "PID_Autotuner.h"
 
 #include <math.h>
@@ -20,6 +20,7 @@
 //#include "PT100_E3D.h"
 
 #include "_hal/__hal.h"
+#include "Arduino.h"
 
 #define UNDEFINED -1
 
@@ -119,7 +120,7 @@ bool TemperatureControl::load_controls(ConfigReader& cr)
         vfet_enable_pin->set(true);
     }
 #endif
-
+    // printf("ddddddddddddddddddddd========================\n");
     return cnt > 0;
 }
 
@@ -210,7 +211,9 @@ bool TemperatureControl::configure(ConfigReader& cr, ConfigReader::section_map_t
         this->heater_pin->set(0);
         //set_low_on_debug(heater_pin->port_number, heater_pin->pin);
         // TODO use single fasttimer for all sigma delta
-        float freq= cr.get_float(m, pwm_frequency_key, 2000);
+        float freq= cr.get_float(m, pwm_frequency_key, 900);       //Xuming, Can not read out from config.ini,  Is this a bug?
+        // Serial.print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ");
+        // Serial.println(freq);
         if(freq >= FastTicker::get_min_frequency()) { // if >= 1KHz use FastTicker
             if(FastTicker::getInstance()->attach((uint32_t)freq, std::bind(&SigmaDeltaPwm::on_tick, this->heater_pin)) < 0) {
                 printf("configure-temperature: ERROR Fast Ticker was not set (Too slow?)\n");
