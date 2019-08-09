@@ -1,19 +1,25 @@
 #include "Endstops.h"
-#include "smoothie/GCode.h"
-#include "robot/Conveyor.h"
-#include "robot/ActuatorCoordinates.h"
-#include "_hal/__hal.h"
-#include "robot/StepperMotor.h"
-#include "robot/Robot.h"
-#include "libs/SlowTicker.h"
-#include "robot/Planner.h"
-#include "libs/OutputStream.h"
-#include "robot/StepTicker.h"
-#include "smoothie/ConfigReader.h"
-#include "smoothie/Dispatcher.h"
-#include "startup.h"
 
-#include "robot/arm_solutions/BaseSolution.h"
+
+#include "_hal/__hal.h"
+
+#include "libs/SlowTicker.h"
+#include "libs/OutputStream.h"
+
+#include "smoothie/robot/arm_solutions/BaseSolution.h"
+#include "smoothie/robot/Conveyor.h"
+#include "smoothie/robot/ActuatorCoordinates.h"
+#include "smoothie/robot/Actuator/StepperMotor.h"
+#include "smoothie/robot/Robot.h"
+#include "smoothie/robot/Planner.h"
+#include "smoothie/robot/StepTicker.h"
+
+#include "smoothie/RobotStarter.h"
+
+#include "smoothie/smoothie/ConfigReader.h"
+#include "smoothie/smoothie/Dispatcher.h"
+#include "smoothie/smoothie/GCode.h"
+
 
 #include <ctype.h>
 #include <algorithm>
@@ -141,7 +147,9 @@ bool Endstops::load_endstops(ConfigReader& cr)
         if(!cr.get_bool(mm, "enable", false)) continue;
 
         endstop_info_t *pin_info= new endstop_info_t;
-        pin_info->pin.from_string(cr.get_string(mm, pin_key, "nc" ))->as_input();
+        // pin_info->pin.from_string(cr.get_string(mm, pin_key, "nc" ))->as_input();
+        pin_info->pin.from_string(cr.get_string(mm, pin_key, "nc" ));
+        pin_info->pin.start();
         if(!pin_info->pin.connected()){
             // no pin defined try next
             printf("configure-endstop: no pin defined for %s\n", name.c_str());

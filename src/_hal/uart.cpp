@@ -1,18 +1,15 @@
 #include "uart.h"
-#include "Arduino.h"
+#include "HardwareSerial.h"
 
 size_t read_uart(char * buf, size_t length) {
-    unsigned int  counter = 0 ; 
-    int incomingByte = 0;
-    int rx_bytes = Serial.available();
-    for (int i = 0; i < rx_bytes; i++){
-        incomingByte = Serial.read();
-        // Serial.print("`");
-        // Serial.print(char(incomingByte));
-        buf[counter] = char(incomingByte);
-        counter++;
+    unsigned int  index = 0 ; 
+    int incomingChar = 0;
+    int rx_bytes_count = Serial.available();
+    for (index = 0; index < rx_bytes_count; index++){
+        incomingChar = Serial.read();
+        buf[index] = char(incomingChar);
     }
-    return counter;
+    return index;
 }
 
 size_t write_uart(const char * buf, size_t length){

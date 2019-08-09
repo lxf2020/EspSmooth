@@ -1,15 +1,17 @@
 #include "Player.h"
 
-#include "robot/Robot.h"
+#include "smoothie/robot/Robot.h"
+#include "smoothie/robot/Conveyor.h"
+
 #include "libs/OutputStream.h"
-#include "smoothie/GCode.h"
-#include "smoothie/ConfigReader.h"
-#include "smoothie/Dispatcher.h"
-#include "robot/Conveyor.h"
 #include "libs/StringUtils.h"
-#include "modules/tools/temperaturecontrol/TemperatureControl.h"
-#include "startup.h"
 #include "libs/MessageQueue.h"
+
+#include "smoothie/RobotStarter.h"
+#include "smoothie/smoothie/GCode.h"
+#include "smoothie/smoothie/ConfigReader.h"
+#include "smoothie/smoothie/Dispatcher.h"
+#include "modules/tools/temperaturecontrol/TemperatureControl.h"
 
 #include "FreeRTOS.h"
 #include "freertos/task.h"

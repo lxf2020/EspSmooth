@@ -1,12 +1,13 @@
 #pragma once
 
-#include "smoothie/Module.h"
 #include "_hal/__hal.h"
-#include "smoothie/ConfigReader.h"
+#include "smoothie/smoothie/Module.h"
+#include "smoothie/smoothie/ConfigReader.h"
 
 #include <tuple>
 
-class StepperMotor;
+// class StepperMotor;
+class Actuator;
 class GCode;
 class OutputStream;
 
@@ -41,7 +42,8 @@ private:
     bool handle_gcode(GCode& gcode, OutputStream& os);
     bool handle_mcode(GCode& gcode, OutputStream& os);
 
-    StepperMotor *stepper_motor;
+    // StepperMotor *stepper_motor;
+    Actuator *stepper_motor;
 
     float tool_offset[3] {0, 0, 0};
 

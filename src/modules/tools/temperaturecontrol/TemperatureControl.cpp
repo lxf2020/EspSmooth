@@ -1,25 +1,28 @@
 #include "TemperatureControl.h"
 #include "TempSensor.h"
-#include "libs/SigmaDeltaPwm.h"
-#include "robot/Conveyor.h"
-#include "libs/OutputStream.h"
-#include "smoothie/GCode.h"
-#include "libs/SlowTicker.h"
-#include "libs/FastTicker.h"
-#include "smoothie/Dispatcher.h"
-#include "startup.h"
+#include "Thermistor.h"
 #include "PID_Autotuner.h"
 
-#include <math.h>
-#include <string.h>
+#include "smoothie/robot/Conveyor.h"
+
+#include "smoothie/smoothie/GCode.h"
+#include "smoothie/smoothie/Dispatcher.h"
+#include "smoothie/RobotStarter.h"
+
+#include "libs/SlowTicker.h"
+#include "libs/FastTicker.h"
+#include "libs/OutputStream.h"
+
 
 // Temp sensor implementations:
-#include "Thermistor.h"
 //#include "max31855.h"
 //#include "AD8495.h"
 //#include "PT100_E3D.h"
 
+#include "_hal/Pin/SigmaDeltaPwm.h"
 #include "_hal/__hal.h"
+#include <math.h>
+#include <string.h>
 #include "Arduino.h"
 
 #define UNDEFINED -1

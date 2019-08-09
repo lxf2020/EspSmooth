@@ -1,17 +1,20 @@
 #include "ZProbe.h"
-
-#include "robot/arm_solutions/BaseSolution.h"
-#include "smoothie/ConfigReader.h"
-#include "robot/Robot.h"
-#include "robot/StepperMotor.h"
-#include "startup.h"
-#include "smoothie/GCode.h"
-#include "robot/Conveyor.h"
-#include "libs/SlowTicker.h"
-#include "robot/Planner.h"
 #include "ZProbeStrategy.h"
-#include "robot/StepTicker.h"
-#include "smoothie/Dispatcher.h"
+
+
+#include "smoothie/robot/arm_solutions/BaseSolution.h"
+#include "smoothie/robot/Robot.h"
+#include "smoothie/robot/Actuator/StepperMotor.h"
+#include "smoothie/RobotStarter.h"
+#include "smoothie/robot/Conveyor.h"
+#include "smoothie/robot/Planner.h"
+#include "smoothie/robot/StepTicker.h"
+
+#include "smoothie/smoothie/GCode.h"
+#include "smoothie/smoothie/ConfigReader.h"
+#include "smoothie/smoothie/Dispatcher.h"
+
+#include "libs/SlowTicker.h"
 #include "libs/OutputStream.h"
 
 // strategies we know about
@@ -72,7 +75,9 @@ bool ZProbe::configure(ConfigReader& cr)
         return false;
     }
 
-    this->pin.from_string( cr.get_string(m, probe_pin_key, "nc" ))->as_input();
+    // this->pin.from_string( cr.get_string(m, probe_pin_key, "nc" ))->as_input();
+    this->pin.from_string( cr.get_string(m, probe_pin_key, "nc" ));
+    this->pin.start();
     if(!this->pin.connected()) {
         printf("ERROR: config-zprobe: no pin defined\n");
         return false;
